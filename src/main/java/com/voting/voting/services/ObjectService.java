@@ -8,6 +8,7 @@ public interface ObjectService {
     List<Object> findAllObjects();
     List<Object> findAllAndSort();
     Object saveObject(Object object);
-    public Object findBookById(Long id);
-    void editObject(Object object, Long id);
+    public Object findBookById(int id);
+    Object update(Integer integer);
+    void editObject(Object object, int id);
 }

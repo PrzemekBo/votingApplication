@@ -12,7 +12,6 @@
 <body>
         <section class="container">
             <div class="container">
-                <form action="#" th:action="@{/setVote}" type="hidden" value="PUT" class="form-horizontal">
                     <th:block th:each="object : ${objectList}">
                         <div class="col-sm-6 col-md-3" style="padding-bottom: 15px">
                             <div class="thumbnail">
@@ -20,19 +19,20 @@
                                     <p th:text="${object.name}"></p>
                                     <p th:text="${object.votes}"></p>
                                     --------------------------
-                                    <div class="form-group">
-                                        <div class="col-lg-offset-2 col-lg-10">
-                                            <input type="submit" id="btnAdd" class="btn btn-primary"
-                                                   value="Vote"/>
-                                        </div>
-                                    </div>
-                                    --------------------------
+                                    -------------------------
+                                    <form action="#"
+                                          th:action="@{/update/{id}(id=${object.id})}"
+                                          th:object="${object}"
+                                          method="post">
+                                        <input type="submit" value="Vote">
+                                    </form>
+
                                 </div>
                             </div>
                         </div>
                     </th:block>
 
-                </form>
+
 
             </div>
         </section>

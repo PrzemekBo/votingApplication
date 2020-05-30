@@ -9,20 +9,21 @@ import javax.validation.constraints.NotBlank;
 public class Object {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-    @NotBlank(message = "Name is mandatory")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    @Column(nullable = false, length = 50)
     private String name;
+    @Column(nullable = false, length = 5)
     private int votes;
 
     public Object() {
     }
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

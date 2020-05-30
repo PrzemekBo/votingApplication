@@ -9,16 +9,26 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
 public class ObjectServiceImpl implements ObjectService {
 
+    public static final int MAX_SIZE = 5;
+
     private ObjectRepository objectRepository;
 
     @Override
-    public Object findBookById(Long id) {
+    public Object findBookById(int id) {
         return objectRepository.getOne(id);
+    }
+
+    @Override
+    public Object update(Integer id) {
+        Optional<Object> object=objectRepository.findById(id);
+        object.get().setVotes(object.get().getVotes()+1);
+        return object.get();
     }
 
     @Autowired
@@ -33,6 +43,10 @@ public class ObjectServiceImpl implements ObjectService {
 
     @Override
     public List<Object> findAllAndSort() {
+        List<Object> list =objectRepository.findAll();
+        if (list.size()==MAX_SIZE){
+
+        }
         return objectRepository.findAll(Sort.by(Sort.Direction.DESC, "votes"));
     }
 
@@ -43,7 +57,7 @@ public class ObjectServiceImpl implements ObjectService {
     }
 
     @Override
-    public void editObject(Object object, Long id) {
+    public void editObject(Object object, int id) {
         Object editedObject = objectRepository.getOne(id);
         editedObject.setVotes(object.getVotes() + 1);
         objectRepository.save(editedObject);

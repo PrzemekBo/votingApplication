@@ -13,29 +13,29 @@
     <section>
         <div class="jumbotron">
             <div class="container">
-                <h1>Object</h1>
-                <p>Add new Object</p>
+                <h1>Object info</h1>
             </div>
         </div>
     </section>
     <section class="container">
-        <form action="#" th:action="@{/addObject}" th:object="${newObject}" method="post" class="form-horizontal">
-            <fieldset>
-                <legend>Add new object</legend>
-                <div class="form-group">
-                    <label class="control-label col-lg-2" for="name">Name</label>
-                    <div class="col-lg-10">
-                        <input id="name" type="text" th:field="*{name}" class="form:input-large" />
-                    </div>
-                </div>
-            </fieldset>
-            <div class="form-group">
-                <div class="col-lg-offset-2 col-lg-10">
-                    <input type="submit" id="btnAdd" class="btn btn-primary"
-                           value="Create"/>
-                </div>
+        <div class="row">
+            <div class="col-md-5">
+                <h3 th:text="${singleObject.id}"></h3>
+                <p>
+                    <strong>Object name : </strong><spanth th:text="${singleObject.name}"></spanth>
+                </p>
+                <p>
+                    <strong>Object votes : </strong><spanth th:text="${singleObject.votes}"></spanth>
+                </p>
+                <p>
+                    <a th:href="@{'/objects'}" class="btn btn-default">
+                        <span class="glyphicon-hand-left glyphicon"></span> back
+                    </a>
+
+                </p>
+
             </div>
-        </form>
+        </div>
     </section>
 </div>
 </body>

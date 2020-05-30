@@ -2,16 +2,24 @@ package com.voting.voting.controllers;
 
 import com.voting.voting.config.ViewNames;
 import com.voting.voting.entity.Object;
+import com.voting.voting.repositories.ObjectRepository;
 import com.voting.voting.services.ObjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 public class ObjectController {
 
     private ObjectService objectService;
+
+    private ObjectRepository objectRepository;
 
     @Autowired
     public ObjectController(ObjectService objectService) {
@@ -21,25 +29,38 @@ public class ObjectController {
     @GetMapping("/objects")
     public String getObject(Model model) {
         model.addAttribute("objectList", objectService.findAllAndSort());
-        return ViewNames.BOOKS;
+        return ViewNames.OBJECTS;
     }
 
-    @GetMapping("/objects/add")
+    @GetMapping("/addObject")
     public String addObject(Model model) {
         model.addAttribute("newObject", new Object());
-        return "addObject";
+        return ViewNames.ADDOBJECT;
     }
 
-    @PostMapping("/setName")
-    public String saveObject(@ModelAttribute("newObject") Object object, Model model) {
-        objectService.saveObject(object);
-        return getObject(model);
+    @PostMapping("/addObject")
+    public String addObject(@ModelAttribute("newObject") Object object, Model model) {
+        Object singleObject = objectService.saveObject(object);
+        model.addAttribute("singleObject", singleObject);
+        return ViewNames.OBJECT;
     }
 
-    @PutMapping("/setVote")
-    public String putObject(@RequestBody Object object, @PathVariable Long id, Model model) {
-       // model.addAttribute("object.votes", object.getVotes());
+    @PostMapping("/setVote/{id}")
+    public ResponseEntity<Void> putObject(Object object, @PathVariable int id) {
         objectService.editObject(object,id);
-        return getObject(model);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/update/{id}")
+    public String updateUser(@PathVariable("id") Integer id, @Valid Object object,
+                             BindingResult result, Model model) {
+        Object newObject = objectService.update(id);
+        Object singleObject = objectService.saveObject(newObject);
+        model.addAttribute("singleObject", singleObject);
+
+/*        object.setVotes(object.getVotes()+1);
+        objectRepository.save(object);
+        model.addAttribute("objects", objectRepository.findAll());*/
+        return ViewNames.OBJECT;
     }
 }
