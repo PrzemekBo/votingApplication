@@ -10,13 +10,22 @@ public class Object {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    @Column(nullable = false, length = 50)
+    //TODO AUTO
+    private int id;
+
+    @NotBlank(message = "Name is mandatory")
+    @Column(name = "name")
     private String name;
-    @Column(nullable = false, length = 5)
+
+    @Column(name = "votes")
     private int votes;
 
     public Object() {
+    }
+
+    public Object(String name,int votes) {
+        this.name = name;
+        this.votes = votes;
     }
 
     public Integer getId() {
