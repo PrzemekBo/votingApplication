@@ -52,15 +52,9 @@ public class ObjectController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateUser(@PathVariable("id") Integer id, @Valid Object object,
-                             BindingResult result, Model model) {
-        Object newObject = objectService.update(id);
-        Object singleObject = objectService.saveObject(newObject);
+    public String updateUser(@PathVariable("id") Integer id, Model model) {
+        Object singleObject = objectService.update(id);
         model.addAttribute("singleObject", singleObject);
-
-/*        object.setVotes(object.getVotes()+1);
-        objectRepository.save(object);
-        model.addAttribute("objects", objectRepository.findAll());*/
         return ViewNames.OBJECT;
     }
 }

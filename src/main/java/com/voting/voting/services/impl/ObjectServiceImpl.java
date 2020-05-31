@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -26,10 +25,12 @@ public class ObjectServiceImpl implements ObjectService {
 
     @Override
     public Object update(Integer id) {
-        Optional<Object> object=objectRepository.findById(id);
-        object.get().setVotes(object.get().getVotes()+1);
-        return object.get();
+        Object object = objectRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+        object.setVotes(object.getVotes() + 1);
+        return object;
     }
+
 
     @Autowired
     public ObjectServiceImpl(ObjectRepository objectRepository) {
@@ -43,9 +44,8 @@ public class ObjectServiceImpl implements ObjectService {
 
     @Override
     public List<Object> findAllAndSort() {
-        List<Object> list =objectRepository.findAll();
-        if (list.size()==MAX_SIZE){
-
+        List<Object> list = objectRepository.findAll();
+        if (list.size() == MAX_SIZE) {
         }
         return objectRepository.findAll(Sort.by(Sort.Direction.DESC, "votes"));
     }
