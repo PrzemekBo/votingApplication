@@ -8,9 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ObjectRepository extends CrudRepository<Object, Long> {
-
-
+public interface ObjectRepository extends JpaRepository<Object, Long> {
     List<Object> findByName(String name);
 
 }

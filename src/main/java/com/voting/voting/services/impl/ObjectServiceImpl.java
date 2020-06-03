@@ -1,3 +1,5 @@
+
+
 package com.voting.voting.services.impl;
 
 import com.voting.voting.entity.Object;
@@ -8,7 +10,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -19,16 +23,16 @@ public class ObjectServiceImpl implements ObjectService {
     private ObjectRepository objectRepository;
 
     @Override
-    public Object findBookById(int id) {
+    public Object findBookById(long id) {
         return objectRepository.getOne(id);
     }
 
     @Override
-    public Object update(Integer id) {
-        Object object = objectRepository.findById(id)
+    public Object update(Long id) {
+        Object updatedObject = objectRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
-        object.setVotes(object.getVotes() + 1);
-        return object;
+        updatedObject.setVotes(updatedObject.getVotes()+1);
+        return objectRepository.save(updatedObject);
     }
 
 
@@ -52,14 +56,21 @@ public class ObjectServiceImpl implements ObjectService {
 
     @Override
     public Object saveObject(Object object) {
-        //     object.setName(object.getName());
         return objectRepository.save(object);
     }
 
     @Override
-    public void editObject(Object object, int id) {
+    public void editObject(Object object, long id) {
         Object editedObject = objectRepository.getOne(id);
+        editedObject.setName(editedObject.getName());
         editedObject.setVotes(object.getVotes() + 1);
         objectRepository.save(editedObject);
     }
+
+    @Override
+    public Object findObjectById(long id) {
+        return objectRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid object Id:" + id));
+    }
 }
+

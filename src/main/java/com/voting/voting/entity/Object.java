@@ -10,8 +10,8 @@ public class Object {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //TODO AUTO
-    private int id;
+    //TODO AUTO auto
+    private long id;
 
     @NotBlank(message = "Name is mandatory")
     @Column(name = "name")
@@ -28,11 +28,11 @@ public class Object {
         this.votes = votes;
     }
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
